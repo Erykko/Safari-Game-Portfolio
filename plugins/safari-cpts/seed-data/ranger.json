@@ -1,0 +1,26 @@
+{
+  "title": "Eric Mutema",
+  "avatar_emoji": "🦒",
+  "stats": [
+    { "value": "9+", "label": "Projects" },
+    { "value": "5+", "label": "Years Exp." },
+    { "value": "2", "label": "Continents" },
+    { "value": "∞", "label": "Ideas Built" }
+  ],
+  "bio_paragraphs": [
+    "A developer with a <strong>keen eye for design</strong>, roaming the digital plains since long before the trails were paved. Based in Nairobi, working with clients across the globe.",
+    "I partner with <strong>web agencies, enterprises, startups, and individuals</strong> to craft exceptional digital experiences — from conception through orchestration. Independent, agile, and relentlessly detail-oriented.",
+    "Whether it's a bespoke membership platform, an e-commerce ecosystem, or a custom plugin powered by AI — <strong>every pixel and every line of code</strong> is treated as part of something alive."
+  ],
+  "specialties": [
+    "WordPress & WooCommerce Development",
+    "Laravel & PHP Backend Engineering",
+    "JavaScript, jQuery & Frontend Craft",
+    "Bricks Builder, Elementor & ACF Power User",
+    "Custom Plugins & AI-Powered Tools",
+    "International & Local Clients Served"
+  ],
+  "location": "Nairobi, Kenya",
+  "website": "designnairobi.agency",
+  "availability": "Available for remote & local projects"
+}

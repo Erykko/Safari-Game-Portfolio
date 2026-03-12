@@ -1,0 +1,13 @@
+/*
+Theme Name: Safari Portfolio
+Theme URI: https://github.com/eric/safari-portfolio
+Author: Eric Mutema
+Description: Block-based Safari Portfolio game theme. Hero, Toolkit, Sightings, Ranger, and Contact sections are Gutenberg blocks; CPTs and ACF drive content.
+Version: 1.0.0
+Requires at least: 5.8
+Requires PHP: 7.4
+License: GPL v2 or later
+Text Domain: safari-portfolio
+*/
+
+/* Theme metadata only. Core game styles live in assets/css/game.css */

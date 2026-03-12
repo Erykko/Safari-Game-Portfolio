@@ -1,0 +1,12 @@
+[
+  { "icon": "🌐", "name": "WordPress", "desc": "Core CMS platform — from themes to plugins", "level": 95 },
+  { "icon": "🛒", "name": "WooCommerce", "desc": "E-commerce solutions and custom stores", "level": 90 },
+  { "icon": "⚙️", "name": "PHP / Laravel", "desc": "Backend logic, APIs, and frameworks", "level": 85 },
+  { "icon": "🧱", "name": "Bricks Builder", "desc": "Advanced visual website construction", "level": 92 },
+  { "icon": "🎨", "name": "Elementor", "desc": "Page building and visual design", "level": 88 },
+  { "icon": "📋", "name": "ACF", "desc": "Advanced Custom Fields for flexible data", "level": 94 },
+  { "icon": "⚡", "name": "JavaScript", "desc": "Dynamic interactions and frontend logic", "level": 82 },
+  { "icon": "💅", "name": "CSS / ACSS", "desc": "Styling, animations, and design systems", "level": 88 },
+  { "icon": "🤖", "name": "OpenAI API", "desc": "AI-powered plugin and tool development", "level": 70 },
+  { "icon": "📬", "name": "Gravity Forms", "desc": "Complex form solutions and integrations", "level": 87 }
+]

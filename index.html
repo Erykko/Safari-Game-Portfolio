@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Eric Mutema — WordPress Developer based in Nairobi, Kenya. Turning ideas into real-life digital products.">
+
+  <title>Eric Mutema — Safari Portfolio</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <!-- Game Styles -->
+  <link rel="stylesheet" href="game.css">
+</head>
+<body>
+
+  <!-- ================================================================
+       CUSTOM CURSOR
+       ================================================================ -->
+  <div class="cursor" id="cursor" aria-hidden="true">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="14" stroke="#E8A825" stroke-width="1.5" opacity="0.6"/>
+      <circle cx="18" cy="18" r="4"  fill="#E8A825"/>
+      <line x1="18" y1="2"  x2="18" y2="10" stroke="#E8A825" stroke-width="1.5" opacity="0.6"/>
+      <line x1="18" y1="26" x2="18" y2="34" stroke="#E8A825" stroke-width="1.5" opacity="0.6"/>
+      <line x1="2"  y1="18" x2="10" y2="18" stroke="#E8A825" stroke-width="1.5" opacity="0.6"/>
+      <line x1="26" y1="18" x2="34" y2="18" stroke="#E8A825" stroke-width="1.5" opacity="0.6"/>
+    </svg>
+  </div>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+  <!-- ================================================================
+       HUD — HEAD-UP DISPLAY (fixed overlay)
+       ================================================================ -->
+  <header class="hud" role="banner">
+    <div class="hud-left">
+      <span class="hud-logo">Eric Mutema</span>
+      <div class="hud-sep" aria-hidden="true"></div>
+      <span class="hud-mission">SAFARI PORTFOLIO</span>
+    </div>
+
+    <div class="hud-right">
+      <button type="button" class="hud-menu-toggle" id="hudMenuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="hudNav">
+        <span class="hud-menu-icon" aria-hidden="true">☰</span>
+      </button>
+      <nav class="nav-links" id="hudNav" aria-label="Main navigation">
+        <a href="#toolkit"     class="nav-link">Toolkit</a>
+        <a href="#sightings"   class="nav-link">Sightings</a>
+        <a href="#ranger"      class="nav-link">The Ranger</a>
+        <a href="#field-notes" class="nav-link">Contact</a>
+      </nav>
+
+      <button
+        type="button"
+        class="hud-icon-button"
+        id="fieldGuideToggle"
+        aria-label="Open field guide"
+      >
+        📖
+      </button>
+
+      <button
+        type="button"
+        class="hud-icon-button"
+        id="audioToggle"
+        aria-label="Toggle ambient audio"
+      >
+        🔈
+      </button>
+
+      <div class="hud-rank" aria-label="Safari rank and experience">
+        <div class="hud-rank-label" id="hudRankLabel">Rank 1 · Day Tripper</div>
+        <div class="hud-rank-bar" aria-hidden="true">
+          <div class="hud-rank-fill" id="hudRankFill"></div>
+        </div>
+      </div>
+
+      <div class="sightings-counter" role="status" aria-live="polite" aria-label="Wildlife sightings count">
+        <span class="icon" aria-hidden="true">🦁</span>
+        <span class="count" id="sightingCount">0/9</span>
+      </div>
+
+      <div class="compass" aria-hidden="true">
+        <div class="compass-needle"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scroll progress -->
+  <div class="progress-bar" role="progressbar" aria-label="Scroll progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-fill" id="progressFill"></div>
+    <div class="progress-leopard" id="progressLeopard" aria-hidden="true">
+      <span class="progress-leopard-emoji" aria-hidden="true">🐆</span>
+    </div>
+  </div>
+
+  <!-- Encounter notification -->
+  <div class="encounter-popup" id="encounterPopup" role="status" aria-live="polite">
+    <div class="encounter-popup-title">⚡ New Sighting!</div>
+    <div class="encounter-popup-name" id="encounterName">—</div>
+  </div>
+
+  <!-- Shutter overlay + polaroid card -->
+  <div class="shutter-overlay" id="shutterOverlay" aria-hidden="true"></div>
+  <div class="polaroid-card" id="polaroidCard" aria-hidden="true">
+    <div class="polaroid-inner">
+      <div class="polaroid-icon">📷</div>
+      <div class="polaroid-name">New Sighting</div>
+    </div>
+  </div>
+
+  <!-- Boot / welcome overlay -->
+  <div class="boot-screen" id="bootScreen" aria-hidden="true">
+    <div class="boot-inner">
+      <div class="boot-kicker">Safari Portfolio · Nairobi, Kenya</div>
+      <div class="boot-title" id="bootTitle">Initializing Field Equipment…</div>
+      <div class="boot-sub" id="bootSubtitle">Calibrating compass, loading wildlife database (9 species detected).</div>
+    </div>
+  </div>
+
+  <!-- Field guide overlay -->
+  <div class="field-guide" id="fieldGuide" role="dialog" aria-modal="true" aria-label="Safari Field Guide">
+    <div class="field-guide-inner">
+      <button
+        type="button"
+        class="field-guide-close"
+        id="fieldGuideClose"
+        aria-label="Close field guide"
+      >
+        ✕
+      </button>
+      <h2 class="field-guide-title">Field Guide</h2>
+      <p class="field-guide-sub">All known species along this digital safari. Photographed sightings are highlighted.</p>
+      <div class="field-guide-grid" id="fieldGuideGrid" aria-label="Species list"></div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       MAIN CONTENT
+       ================================================================ -->
+  <main id="main-content">
+
+    <!-- ============================================================
+         BIOME 01 — BASE CAMP (Hero)
+         ============================================================ -->
+    <section id="base-camp" aria-label="Base Camp — Hero">
+
+      <!-- Stars (ambient overlay) -->
+      <div class="stars" aria-hidden="true" id="starsContainer"></div>
+
+      <!-- Dust particle container -->
+      <div class="dust-container" aria-hidden="true" id="dustContainer"></div>
+
+      <!-- Distant hot air balloons / birds -->
+      <div class="hero-balloons" aria-hidden="true">
+        <div class="balloon balloon-1"></div>
+        <div class="balloon balloon-2"></div>
+      </div>
+      <div class="hero-birds" aria-hidden="true">
+        <div class="bird bird-1"></div>
+        <div class="bird bird-2"></div>
+        <div class="bird bird-3"></div>
+      </div>
+
+      <div class="hero-frame">
+        <div class="hero-hud-bar">
+          <div class="hero-hud-meta">
+            <span class="hero-hud-location">🌍 Nairobi, Kenya</span>
+            <span class="hero-hud-sep">·</span>
+            <span class="hero-hud-label">Digital Safari Mission Console</span>
+          </div>
+          <div class="hero-hud-rank-mini" id="heroHudRankMini">
+            Rank 1 · Day Tripper · 0 XP
+          </div>
+        </div>
+
+        <div class="hero-main">
+          <!-- Hero copy -->
+          <div class="hero-content">
+            <p class="hero-badge">Est. Digital Safari</p>
+
+            <div class="hero-tag">
+              <span aria-hidden="true">🧭</span>
+              <span>Welcome to Base Camp</span>
+            </div>
+
+            <h1 class="hero-name">Eric<br>Mutema</h1>
+            <p class="hero-title-line">WordPress Developer</p>
+
+            <p class="hero-desc">
+              In the vast digital savanna, ideas roam wild. This base camp is your briefing tent —
+              choose your mission and I’ll guide you through the terrain: toolkit, sightings, or the ranger’s story.
+            </p>
+          </div>
+
+          <!-- Mission console -->
+          <section class="hero-mission-console" id="heroMission" aria-label="Safari mission setup">
+            <header class="hero-mission-header">
+              <p class="hero-mission-title">Select Your First Safari Mission</p>
+              <p class="hero-mission-sub">A short briefing that shapes how you enter the trail.</p>
+            </header>
+
+            <div class="hero-mission-steps" aria-hidden="true">
+              <div class="hero-mission-step is-active" data-step="1">1 · Time of Day</div>
+              <div class="hero-mission-step" data-step="2">2 · Mission Type</div>
+              <div class="hero-mission-step" data-step="3">3 · Confirm Safari</div>
+            </div>
+
+            <div class="hero-mission-body">
+              <div class="hero-mission-group">
+                <p class="hero-mission-label">Step 1 · Choose Time of Day</p>
+                <div class="hero-pill-row" role="radiogroup" aria-label="Time of day">
+                  <button type="button" class="hero-pill" data-time="dawn">Dawn Patrol</button>
+                  <button type="button" class="hero-pill" data-time="golden">Golden Hour</button>
+                  <button type="button" class="hero-pill" data-time="night">Night Safari</button>
+                </div>
+              </div>
+
+              <div class="hero-mission-group">
+                <p class="hero-mission-label">Step 2 · Choose Mission</p>
+                <div class="hero-pill-row" role="radiogroup" aria-label="Mission type">
+                  <button type="button" class="hero-pill" data-mission="toolkit">Explore Toolkit</button>
+                  <button type="button" class="hero-pill" data-mission="sightings">Track Sightings</button>
+                  <button type="button" class="hero-pill" data-mission="ranger">Meet The Ranger</button>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="hero-mission-confirm"
+                id="heroMissionConfirm"
+                disabled
+              >
+                Confirm Safari &amp; Begin
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <div class="hero-mini-log" id="heroMissionLog" role="status" aria-live="polite">
+          Choose a time of day and mission to begin your safari.
+        </div>
+      </div>
+
+      <!-- Scroll hint -->
+      <div class="scroll-hint" id="scrollHint" aria-hidden="true">
+        <span>Scroll to explore</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <!-- Wave divider -->
+    <div class="savanna-divider" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,0 Q180,60 360,20 Q540,-20 720,40 Q900,80 1080,20 Q1260,-20 1440,30 L1440,60 L0,60 Z" fill="#0D1A08"/>
+      </svg>
+    </div>
+
+    <!-- ============================================================
+         BIOME 02 — GRASSLANDS (Toolkit / Skills)
+         ============================================================ -->
+    <section class="section" id="toolkit" aria-labelledby="toolkit-heading">
+      <div class="section-inner">
+        <p class="section-label">Ranger's Equipment</p>
+        <h2 class="section-title" id="toolkit-heading">The Toolkit</h2>
+        <p class="section-sub">Every skilled ranger carries the right tools. Here's the arsenal that brings digital life to the savanna.</p>
+
+        <!-- Populated by game.js → initToolkit() -->
+        <div class="toolkit-grid" id="toolkitGrid" role="list" aria-label="Skills and technologies"></div>
+      </div>
+    </section>
+
+    <!-- Wave divider -->
+    <div class="savanna-divider" style="background:#0D1A08" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,30 Q180,-10 360,40 Q540,70 720,20 Q900,-10 1080,45 Q1260,70 1440,20 L1440,60 L0,60 Z" fill="#0A1506"/>
+      </svg>
+    </div>
+
+    <!-- ============================================================
+         BIOME 03 — ACACIA WOODLAND (Projects / Sightings)
+         ============================================================ -->
+    <section class="section" id="sightings" aria-labelledby="sightings-heading">
+      <div class="section-inner">
+        <div class="sightings-header">
+          <div>
+            <p class="section-label">Wildlife Encounters</p>
+            <h2 class="section-title" id="sightings-heading">Safari Sightings</h2>
+            <p class="section-sub">Each project — a rare creature encountered on the trail. Click to get closer.</p>
+          </div>
+          <p class="sightings-log-count">
+            SIGHTINGS LOG: <span id="logCount">0</span>/9 RECORDED
+          </p>
+        </div>
+
+        <!-- Populated by game.js → initProjects() -->
+        <div class="projects-grid" id="projectsGrid" role="list" aria-label="Portfolio projects"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         BIOME 04 — WATERING HOLE (About / Ranger)
+         ============================================================ -->
+    <section class="section" id="ranger" aria-labelledby="ranger-heading">
+      <div class="section-inner">
+        <p class="section-label">Field Guide</p>
+        <h2 class="section-title" id="ranger-heading">The Ranger</h2>
+
+        <div class="ranger-grid">
+
+          <!-- Portrait & stats -->
+          <div class="ranger-portrait">
+            <div class="ranger-frame">
+              <div class="ranger-avatar" aria-label="Eric Mutema portrait illustration">🦒</div>
+            </div>
+            <div class="ranger-stats" role="list" aria-label="Key statistics">
+              <div class="stat-box" role="listitem">
+                <span class="stat-num">9+</span>
+                <span class="stat-lbl">Projects</span>
+              </div>
+              <div class="stat-box" role="listitem">
+                <span class="stat-num">5+</span>
+                <span class="stat-lbl">Years Exp.</span>
+              </div>
+              <div class="stat-box" role="listitem">
+                <span class="stat-num">2</span>
+                <span class="stat-lbl">Continents</span>
+              </div>
+              <div class="stat-box" role="listitem">
+                <span class="stat-num">∞</span>
+                <span class="stat-lbl">Ideas Built</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class="ranger-bio">
+            <p class="bio-text">
+              A developer with a <strong>keen eye for design</strong>, roaming the digital plains since long before the trails were paved. Based in Nairobi, working with clients across the globe.
+            </p>
+            <p class="bio-text">
+              I partner with <strong>web agencies, enterprises, startups, and individuals</strong> to craft exceptional digital experiences — from conception through orchestration. Independent, agile, and relentlessly detail-oriented.
+            </p>
+            <p class="bio-text">
+              Whether it's a bespoke membership platform, an e-commerce ecosystem, or a custom plugin powered by AI — <strong>every pixel and every line of code</strong> is treated as part of something alive.
+            </p>
+            <ul class="specialty-list" aria-label="Specialties">
+              <li>WordPress &amp; WooCommerce Development</li>
+              <li>Laravel &amp; PHP Backend Engineering</li>
+              <li>JavaScript, jQuery &amp; Frontend Craft</li>
+              <li>Bricks Builder, Elementor &amp; ACF Power User</li>
+              <li>Custom Plugins &amp; AI-Powered Tools</li>
+              <li>International &amp; Local Clients Served</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         BIOME 05 — RANGER'S LODGE (Contact)
+         ============================================================ -->
+    <section class="section" id="field-notes" aria-labelledby="contact-heading">
+      <div class="section-inner">
+        <p class="section-label">Dispatch from the Field</p>
+        <h2 class="section-title" id="contact-heading">Leave a Field Note</h2>
+
+        <div class="contact-wrap">
+
+          <!-- Contact info -->
+          <div class="contact-info">
+            <blockquote class="contact-quote">
+              "The wilderness of the web is vast — but with the right guide, every journey ends at a destination worth the trek."
+            </blockquote>
+            <div class="contact-detail">
+              <div class="contact-item">
+                <span class="contact-item-icon" aria-hidden="true">📍</span>
+                <span>Nairobi, Kenya</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-item-icon" aria-hidden="true">🌐</span>
+                <span>designnairobi.agency</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-item-icon" aria-hidden="true">🧭</span>
+                <span>Available for remote &amp; local projects</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact form -->
+          <div class="contact-form" role="form" aria-label="Contact form">
+            <div class="form-group">
+              <label class="form-label" for="contact-name">Your Name</label>
+              <input
+                type="text"
+                id="contact-name"
+                name="name"
+                class="form-input"
+                placeholder="Explorer's name..."
+                autocomplete="name"
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contact-email">Email</label>
+              <input
+                type="email"
+                id="contact-email"
+                name="email"
+                class="form-input"
+                placeholder="your@email.com"
+                autocomplete="email"
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contact-message">Your Message</label>
+              <textarea
+                id="contact-message"
+                name="message"
+                class="form-input"
+                placeholder="Describe your safari mission..."
+              ></textarea>
+            </div>
+
+            <button
+              type="button"
+              class="form-submit"
+              onclick="handleFormSubmit(this)"
+              aria-label="Send contact form"
+            >
+              Send Dispatch
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /main-content -->
+
+  <!-- ================================================================
+       FOOTER
+       ================================================================ -->
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <p class="footer-logo">Eric Mutema · Design Nairobi</p>
+      <p class="footer-copy">© 2025 · Crafted on the Digital Savanna</p>
+      <nav class="footer-socials" aria-label="Social links">
+        <a href="https://github.com/Erykko"      class="social-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://designnairobi.agency"   class="social-link" target="_blank" rel="noopener noreferrer">Portfolio</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Firefly container (ambient) -->
+  <div id="firefliesContainer" aria-hidden="true"></div>
+
+  <!-- Audio elements -->
+  <audio id="ambientAudio" loop>
+    <source src="audio/ambient-safari.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="shutterAudio">
+    <source src="audio/shutter.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ================================================================
+       SCRIPTS — game engine
+       ================================================================ -->
+  <script src="game.js"></script>
+
+</body>
+</html>

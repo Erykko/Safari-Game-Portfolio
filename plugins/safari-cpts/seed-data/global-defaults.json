@@ -1,0 +1,47 @@
+{
+  "hero": {
+    "badge": "Est. Digital Safari",
+    "tag": "Welcome to Base Camp",
+    "name": "Eric Mutema",
+    "title": "WordPress Developer",
+    "desc": "In the vast digital savanna, ideas roam wild. This base camp is your briefing tent — choose your mission and I'll guide you through the terrain: toolkit, sightings, or the ranger's story.",
+    "mission_title": "Select Your First Safari Mission",
+    "mission_sub": "A short briefing that shapes how you enter the trail.",
+    "confirm_label": "Confirm Safari & Begin",
+    "mini_log": "Choose a time of day and mission to begin your safari.",
+    "scroll_hint": "Scroll to explore",
+    "location": "Nairobi, Kenya",
+    "hud_label": "Digital Safari Mission Console"
+  },
+  "sections": {
+    "toolkit_label": "Ranger's Equipment",
+    "toolkit_title": "The Toolkit",
+    "toolkit_sub": "Every skilled ranger carries the right tools. Here's the arsenal that brings digital life to the savanna.",
+    "sightings_label": "Wildlife Encounters",
+    "sightings_title": "Safari Sightings",
+    "sightings_sub": "Each project — a rare creature encountered on the trail. Click to get closer.",
+    "ranger_label": "Field Guide",
+    "ranger_title": "The Ranger",
+    "contact_label": "Dispatch from the Field",
+    "contact_title": "Leave a Field Note"
+  },
+  "contact": {
+    "quote": "The wilderness of the web is vast — but with the right guide, every journey ends at a destination worth the trek.",
+    "location": "Nairobi, Kenya",
+    "website": "designnairobi.agency",
+    "availability": "Available for remote & local projects"
+  },
+  "hud": {
+    "logo": "Eric Mutema",
+    "mission": "SAFARI PORTFOLIO",
+    "nav_links": [
+      { "label": "Toolkit", "anchor": "#toolkit" },
+      { "label": "Sightings", "anchor": "#sightings" },
+      { "label": "The Ranger", "anchor": "#ranger" },
+      { "label": "Contact", "anchor": "#field-notes" }
+    ]
+  },
+  "boot": {
+    "kicker": "Safari Portfolio · Nairobi, Kenya"
+  }
+}
