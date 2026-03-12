@@ -407,6 +407,19 @@ function unlockAchievement(id, title, message) {
   safariState.achievements.push(id);
   saveSafariState();
   showAchievementToast(title, message);
+  syncMedalCards();
+}
+
+function syncMedalCards() {
+  var cards = document.querySelectorAll('.medal-card[data-trigger]');
+  if (!cards.length || !safariState) return;
+  cards.forEach(function(card) {
+    var trigger = card.getAttribute('data-trigger');
+    if (hasAchievement(trigger)) {
+      card.classList.remove('medal-locked');
+      card.classList.add('medal-unlocked');
+    }
+  });
 }
 
 function showAchievementToast(title, message) {
@@ -1021,6 +1034,75 @@ function initMobileNav() {
   });
 }
 
+function initContactForm() {
+  const btn = document.querySelector('.form-submit');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    const nameEl = document.getElementById('contact-name');
+    const emailEl = document.getElementById('contact-email');
+    const msgEl = document.getElementById('contact-message');
+    if (!nameEl || !emailEl || !msgEl) return;
+
+    const name = nameEl.value.trim();
+    const email = emailEl.value.trim();
+    const message = msgEl.value.trim();
+
+    if (!name || !email || !message) {
+      btn.textContent = 'Please fill all fields';
+      btn.classList.add('form-submit--error');
+      setTimeout(() => {
+        btn.textContent = 'Send Dispatch';
+        btn.classList.remove('form-submit--error');
+      }, 2500);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const body = new FormData();
+    body.append('action', 'safari_contact');
+    body.append('_wpnonce', (window.SafariAjax && window.SafariAjax.nonce) || '');
+    body.append('name', name);
+    body.append('email', email);
+    body.append('message', message);
+
+    fetch((window.SafariAjax && window.SafariAjax.url) || '/wp-admin/admin-ajax.php', {
+      method: 'POST',
+      credentials: 'same-origin',
+      body,
+    })
+      .then(r => r.json())
+      .then(res => {
+        if (res.success) {
+          btn.textContent = 'Dispatch Sent ✓';
+          btn.classList.add('form-submit--success');
+          nameEl.value = '';
+          emailEl.value = '';
+          msgEl.value = '';
+        } else {
+          btn.textContent = (res.data && res.data.message) || 'Send failed';
+          btn.classList.add('form-submit--error');
+        }
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = 'Send Dispatch';
+          btn.classList.remove('form-submit--success', 'form-submit--error');
+        }, 3000);
+      })
+      .catch(() => {
+        btn.textContent = 'Network error';
+        btn.classList.add('form-submit--error');
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = 'Send Dispatch';
+          btn.classList.remove('form-submit--error');
+        }, 3000);
+      });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initSafariState();
   updateHudRank();
@@ -1034,6 +1116,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initProjects();
   applyPersistentSightings();
   initFieldGuide();
+  initContactForm();
+  syncMedalCards();
   initEasterEggs();
   initMobileNav();
 

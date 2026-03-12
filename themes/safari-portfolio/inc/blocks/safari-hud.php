@@ -10,18 +10,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function safari_block_render_hud( $attributes ) {
-	$logo   = isset( $attributes['logo'] ) ? $attributes['logo'] : ( function_exists( 'get_field' ) ? get_field( 'hud_logo', 'option' ) : null ) ?: 'Eric Mutema';
-	$mission = isset( $attributes['mission'] ) ? $attributes['mission'] : ( function_exists( 'get_field' ) ? get_field( 'hud_mission', 'option' ) : null ) ?: 'SAFARI PORTFOLIO';
-	$nav_links = array();
-	if ( function_exists( 'get_field' ) ) {
-		$nav_links = get_field( 'hud_nav_links', 'option' ) ?: array();
-	}
+	$attributes = is_array( $attributes ) ? $attributes : array();
+	$logo    = isset( $attributes['logo'] ) ? sanitize_text_field( $attributes['logo'] ) : Safari_Settings::get( 'hud_logo' );
+	$mission = isset( $attributes['mission'] ) ? sanitize_text_field( $attributes['mission'] ) : Safari_Settings::get( 'hud_mission' );
+	$logo    = is_string( $logo ) && $logo ? $logo : 'Eric Mutema';
+	$mission = is_string( $mission ) && $mission ? $mission : 'SAFARI PORTFOLIO';
+	$nav_links = Safari_Settings::get_nav_links();
+	$nav_links = array_filter( array_map( function ( $link ) {
+		if ( ! is_array( $link ) ) {
+			return null;
+		}
+		return array(
+			'label'  => isset( $link['label'] ) ? sanitize_text_field( $link['label'] ) : '',
+			'anchor' => isset( $link['anchor'] ) ? sanitize_text_field( $link['anchor'] ) : '#',
+		);
+	}, $nav_links ) );
 	if ( empty( $nav_links ) ) {
 		$nav_links = array(
-			array( 'nav_label' => 'Toolkit', 'nav_anchor' => '#toolkit' ),
-			array( 'nav_label' => 'Sightings', 'nav_anchor' => '#sightings' ),
-			array( 'nav_label' => 'The Ranger', 'nav_anchor' => '#ranger' ),
-			array( 'nav_label' => 'Contact', 'nav_anchor' => '#field-notes' ),
+			array( 'label' => 'Toolkit', 'anchor' => '#toolkit' ),
+			array( 'label' => 'Sightings', 'anchor' => '#sightings' ),
+			array( 'label' => 'The Ranger', 'anchor' => '#ranger' ),
+			array( 'label' => 'Contact', 'anchor' => '#field-notes' ),
 		);
 	}
 	ob_start();
@@ -38,7 +47,7 @@ function safari_block_render_hud( $attributes ) {
 			</button>
 			<nav class="nav-links" id="hudNav" aria-label="<?php esc_attr_e( 'Main navigation', 'safari-portfolio' ); ?>">
 				<?php foreach ( $nav_links as $link ) : ?>
-					<a href="<?php echo esc_url( isset( $link['nav_anchor'] ) ? $link['nav_anchor'] : '#' ); ?>" class="nav-link"><?php echo esc_html( isset( $link['nav_label'] ) ? $link['nav_label'] : '' ); ?></a>
+					<a href="<?php echo esc_url( isset( $link['anchor'] ) ? $link['anchor'] : '#' ); ?>" class="nav-link"><?php echo esc_html( isset( $link['label'] ) ? $link['label'] : '' ); ?></a>
 				<?php endforeach; ?>
 			</nav>
 			<button type="button" class="hud-icon-button" id="fieldGuideToggle" aria-label="<?php esc_attr_e( 'Open field guide', 'safari-portfolio' ); ?>">📖</button>

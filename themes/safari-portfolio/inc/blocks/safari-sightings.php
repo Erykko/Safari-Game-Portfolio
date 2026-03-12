@@ -10,9 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function safari_block_render_sightings( $attributes ) {
-	$label = isset( $attributes['sectionLabel'] ) ? $attributes['sectionLabel'] : ( function_exists( 'get_field' ) ? get_field( 'section_sightings_label', 'option' ) : null ) ?: 'Wildlife Encounters';
-	$title = isset( $attributes['sectionTitle'] ) ? $attributes['sectionTitle'] : ( function_exists( 'get_field' ) ? get_field( 'section_sightings_title', 'option' ) : null ) ?: 'Safari Sightings';
-	$sub   = isset( $attributes['sectionSub'] ) ? $attributes['sectionSub'] : ( function_exists( 'get_field' ) ? get_field( 'section_sightings_sub', 'option' ) : null ) ?: 'Each project — a rare creature encountered on the trail. Click to get closer.';
+	$label_source = isset( $attributes['sectionLabel'] ) ? $attributes['sectionLabel'] : Safari_Settings::get( 'section_sightings_label' );
+	$title_source = isset( $attributes['sectionTitle'] ) ? $attributes['sectionTitle'] : Safari_Settings::get( 'section_sightings_title' );
+	$sub_source   = isset( $attributes['sectionSub'] ) ? $attributes['sectionSub'] : Safari_Settings::get( 'section_sightings_sub' );
+
+	$label = $label_source ?: 'Wildlife Encounters';
+	$title = $title_source ?: 'Safari Sightings';
+	$sub   = $sub_source ?: 'Each project — a rare creature encountered on the trail. Click to get closer.';
 	$log_label = isset( $attributes['logCountLabel'] ) ? $attributes['logCountLabel'] : 'SIGHTINGS LOG';
 	$total = 0;
 	$count_query = new WP_Query( array( 'post_type' => 'safari_project', 'posts_per_page' => -1, 'post_status' => 'publish', 'fields' => 'ids' ) );

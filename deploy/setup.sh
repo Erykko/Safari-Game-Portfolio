@@ -34,19 +34,19 @@ if [ -f "$REPO_ROOT/composer.json" ]; then
   (cd "$REPO_ROOT" && composer install --no-interaction)
 fi
 
-# 5. Activate custom plugins (from repo plugins dir)
+# 5. Activate theme (includes bundled Safari Portfolio Core — CPTs, seed, ACF fields)
+if [ -d "$REPO_ROOT/themes/safari-portfolio" ]; then
+  wp theme activate safari-portfolio 2>/dev/null || true
+fi
+
+# 6. Optional: activate standalone plugins if you use them instead of the bundled core
 for plug in safari-cpts safari-fields; do
   if [ -d "$REPO_ROOT/plugins/$plug" ]; then
     wp plugin activate "$plug" 2>/dev/null || true
   fi
 done
 
-# 6. Activate theme
-if [ -d "$REPO_ROOT/themes/safari-portfolio" ]; then
-  wp theme activate safari-portfolio 2>/dev/null || true
-fi
-
-# 7. Seed content (Safari CPTs plugin)
+# 7. Seed content (bundled Safari Portfolio Core or safari-cpts)
 echo "Seeding Safari content..."
 wp safari seed-skills   2>/dev/null || true
 wp safari seed-projects  2>/dev/null || true

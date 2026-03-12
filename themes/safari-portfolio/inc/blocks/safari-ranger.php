@@ -10,8 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function safari_block_render_ranger( $attributes ) {
-	$label = isset( $attributes['sectionLabel'] ) ? $attributes['sectionLabel'] : ( function_exists( 'get_field' ) ? get_field( 'section_ranger_label', 'option' ) : null ) ?: 'Field Guide';
-	$title = isset( $attributes['sectionTitle'] ) ? $attributes['sectionTitle'] : ( function_exists( 'get_field' ) ? get_field( 'section_ranger_title', 'option' ) : null ) ?: 'The Ranger';
+	$label_source = isset( $attributes['sectionLabel'] ) ? $attributes['sectionLabel'] : Safari_Settings::get( 'section_ranger_label' );
+	$title_source = isset( $attributes['sectionTitle'] ) ? $attributes['sectionTitle'] : Safari_Settings::get( 'section_ranger_title' );
+
+	$label = $label_source ?: 'Field Guide';
+	$title = $title_source ?: 'The Ranger';
 
 	$ranger = new WP_Query( array(
 		'post_type'      => 'safari_ranger',
@@ -22,24 +25,33 @@ function safari_block_render_ranger( $attributes ) {
 	) );
 	$avatar = '🦒';
 	$stats  = array();
-	$bio_paragraphs = array();
+	$bio    = '';
 	$specialties = array();
 	$location = '';
 	$website = '';
 	$availability = '';
 	if ( $ranger->have_posts() ) {
 		$post_id = $ranger->posts[0]->ID;
-		if ( function_exists( 'get_field' ) ) {
-			$avatar         = get_field( 'ranger_avatar_emoji', $post_id ) ?: '🦒';
-			$stats          = get_field( 'ranger_stats', $post_id ) ?: array();
-			$bio_paragraphs = get_field( 'ranger_bio_paragraphs', $post_id ) ?: array();
-			$specialties_raw = get_field( 'ranger_specialties', $post_id ) ?: array();
-			foreach ( $specialties_raw as $row ) {
-				$specialties[] = isset( $row['specialty_text'] ) ? $row['specialty_text'] : '';
+		$avatar       = safari_read_field( 'ranger_avatar_emoji', $post_id ) ?: '🦒';
+		$location     = safari_read_field( 'ranger_location', $post_id ) ?: '';
+		$website      = safari_read_field( 'ranger_website', $post_id ) ?: '';
+		$availability = safari_read_field( 'ranger_availability', $post_id ) ?: '';
+
+		for ( $i = 1; $i <= 6; $i++ ) {
+			$val = safari_read_field( "ranger_stat_{$i}_value", $post_id );
+			$lbl = safari_read_field( "ranger_stat_{$i}_label", $post_id );
+			if ( $val || $lbl ) {
+				$stats[] = array( 'stat_value' => $val ?: '', 'stat_label' => $lbl ?: '' );
 			}
-			$location    = get_field( 'ranger_location', $post_id ) ?: '';
-			$website     = get_field( 'ranger_website', $post_id ) ?: '';
-			$availability = get_field( 'ranger_availability', $post_id ) ?: '';
+		}
+
+		$bio = safari_read_field( 'ranger_bio', $post_id ) ?: '';
+
+		for ( $i = 1; $i <= 10; $i++ ) {
+			$s = safari_read_field( "ranger_specialty_{$i}", $post_id );
+			if ( $s ) {
+				$specialties[] = $s;
+			}
 		}
 	}
 
@@ -63,13 +75,10 @@ function safari_block_render_ranger( $attributes ) {
 						<?php endforeach; ?>
 					</div>
 				</div>
-				<div class="ranger-bio">
-					<?php foreach ( $bio_paragraphs as $row ) : ?>
-						<?php $p = isset( $row['paragraph'] ) ? $row['paragraph'] : ''; ?>
-						<?php if ( $p ) : ?>
-							<p class="bio-text"><?php echo wp_kses_post( $p ); ?></p>
-						<?php endif; ?>
-					<?php endforeach; ?>
+			<div class="ranger-bio">
+				<?php if ( $bio ) : ?>
+					<div class="bio-text"><?php echo wp_kses_post( $bio ); ?></div>
+				<?php endif; ?>
 					<?php if ( ! empty( $specialties ) ) : ?>
 						<ul class="specialty-list" aria-label="<?php esc_attr_e( 'Specialties', 'safari-portfolio' ); ?>">
 							<?php foreach ( $specialties as $s ) : ?>

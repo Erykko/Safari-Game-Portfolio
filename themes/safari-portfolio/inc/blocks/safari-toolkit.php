@@ -10,9 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function safari_block_render_toolkit( $attributes ) {
-	$label = isset( $attributes['sectionLabel'] ) ? $attributes['sectionLabel'] : ( function_exists( 'get_field' ) ? get_field( 'section_toolkit_label', 'option' ) : null ) ?: "Ranger's Equipment";
-	$title = isset( $attributes['sectionTitle'] ) ? $attributes['sectionTitle'] : ( function_exists( 'get_field' ) ? get_field( 'section_toolkit_title', 'option' ) : null ) ?: 'The Toolkit';
-	$sub   = isset( $attributes['sectionSub'] ) ? $attributes['sectionSub'] : ( function_exists( 'get_field' ) ? get_field( 'section_toolkit_sub', 'option' ) : null ) ?: "Every skilled ranger carries the right tools. Here's the arsenal that brings digital life to the savanna.";
+	$label_source = isset( $attributes['sectionLabel'] ) ? $attributes['sectionLabel'] : Safari_Settings::get( 'section_toolkit_label' );
+	$title_source = isset( $attributes['sectionTitle'] ) ? $attributes['sectionTitle'] : Safari_Settings::get( 'section_toolkit_title' );
+	$sub_source   = isset( $attributes['sectionSub'] ) ? $attributes['sectionSub'] : Safari_Settings::get( 'section_toolkit_sub' );
+
+	$label = $label_source ?: "Ranger's Equipment";
+	$title = $title_source ?: 'The Toolkit';
+	$sub   = $sub_source ?: "Every skilled ranger carries the right tools. Here's the arsenal that brings digital life to the savanna.";
 	ob_start();
 	?>
 	<section class="section" id="toolkit" aria-labelledby="toolkit-heading">

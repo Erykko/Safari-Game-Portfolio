@@ -1229,6 +1229,258 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 }
 
 /* =====================
+   ANIMAL TRACKS / TESTIMONIALS
+   ===================== */
+#animal-tracks {
+  background: linear-gradient(180deg, #0A0805 0%, #0D0A02 100%);
+}
+.tracks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2px;
+  margin-top: 60px;
+}
+.track-card {
+  background: rgba(245,230,200,0.02);
+  border: 1px solid rgba(232,168,37,0.08);
+  padding: 32px 28px;
+  position: relative;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+.track-card:hover {
+  border-color: rgba(232,168,37,0.25);
+  background: rgba(232,168,37,0.04);
+  transform: translateY(-2px);
+}
+.track-icon {
+  font-size: 28px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+.track-quote {
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.7;
+  color: rgba(245,230,200,0.75);
+  margin-bottom: 20px;
+}
+.track-quote::before { content: '"'; }
+.track-quote::after  { content: '"'; }
+.track-author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+.track-author-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: var(--cream);
+  letter-spacing: 1px;
+}
+.track-author-role {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(245,230,200,0.4);
+  text-transform: uppercase;
+}
+.track-rating {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--savanna-gold);
+}
+
+/* =====================
+   FIELD MEDALS / ACHIEVEMENTS
+   ===================== */
+#field-medals {
+  background: linear-gradient(180deg, #080504 0%, #0D0A02 100%);
+}
+.medals-sub {
+  margin-bottom: 0;
+}
+.medals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2px;
+  margin-top: 60px;
+}
+.medal-card {
+  background: rgba(245,230,200,0.02);
+  border: 1px solid rgba(232,168,37,0.08);
+  padding: 28px 24px;
+  text-align: center;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+.medal-card:hover {
+  border-color: rgba(232,168,37,0.25);
+  background: rgba(232,168,37,0.04);
+  transform: translateY(-2px);
+}
+.medal-locked {
+  opacity: 0.4;
+  filter: grayscale(0.8);
+}
+.medal-unlocked {
+  opacity: 1;
+  filter: grayscale(0);
+  border-color: rgba(232,168,37,0.3);
+  background: rgba(232,168,37,0.06);
+}
+.medal-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.medal-name {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  color: var(--cream);
+  margin-bottom: 6px;
+}
+.medal-desc {
+  font-size: 13px;
+  color: rgba(245,230,200,0.5);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.medal-meta {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.medal-rarity { color: rgba(245,230,200,0.5); }
+.medal-rarity--common    { color: rgba(245,230,200,0.5); }
+.medal-rarity--rare      { color: #4FC3F7; }
+.medal-rarity--epic      { color: #AB47BC; }
+.medal-rarity--legendary { color: var(--savanna-gold); }
+.medal-xp { color: rgba(245,230,200,0.4); }
+
+/* =====================
+   FIELD DISPATCHES / BLOG
+   ===================== */
+#dispatches,
+.dispatches-archive {
+  background: linear-gradient(180deg, #0D0A02 0%, #0A0805 100%);
+}
+.dispatches-archive .section-inner {
+  padding-top: 100px;
+  padding-bottom: 60px;
+}
+.dispatches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2px;
+  margin-top: 60px;
+}
+.dispatch-card {
+  display: flex;
+  gap: 20px;
+  background: rgba(245,230,200,0.02);
+  border: 1px solid rgba(232,168,37,0.08);
+  padding: 28px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+.dispatch-card:hover {
+  border-color: rgba(232,168,37,0.25);
+  background: rgba(232,168,37,0.04);
+  transform: translateY(-2px);
+}
+.dispatch-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.dispatch-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dispatch-title {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  color: var(--cream);
+  margin: 0;
+}
+.dispatch-excerpt {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(245,230,200,0.6);
+}
+.dispatch-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(245,230,200,0.35);
+}
+.dispatch-topic {
+  color: var(--savanna-gold);
+  opacity: 0.7;
+}
+.dispatches-more {
+  margin-top: 40px;
+  text-align: center;
+}
+.dispatches-more-link {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--savanna-gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232,168,37,0.3);
+  padding-bottom: 4px;
+  transition: border-color 0.3s;
+}
+.dispatches-more-link:hover {
+  border-color: var(--savanna-gold);
+}
+.dispatches-pagination {
+  margin-top: 40px;
+  text-align: center;
+}
+.dispatches-pagination .nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.dispatches-pagination a,
+.dispatches-pagination span {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: rgba(245,230,200,0.5);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px solid rgba(232,168,37,0.15);
+  transition: all 0.3s;
+}
+.dispatches-pagination a:hover {
+  border-color: var(--savanna-gold);
+  color: var(--cream);
+}
+.dispatches-pagination .current {
+  border-color: var(--savanna-gold);
+  color: var(--savanna-gold);
+}
+.dispatches-empty {
+  text-align: center;
+  color: rgba(245,230,200,0.4);
+  font-style: italic;
+  margin-top: 60px;
+}
+
+/* =====================
    ENCOUNTER POPUP
    ===================== */
 .encounter-popup {
@@ -1654,6 +1906,9 @@ footer {
   .projects-grid               { gap: 2px; }
   .ranger-grid                 { gap: 60px; }
   .contact-wrap                { gap: 60px; }
+  .tracks-grid                 { gap: 2px; }
+  .medals-grid                 { gap: 2px; }
+  .dispatches-grid             { gap: 2px; }
 }
 
 /* 768px — tablet portrait: stack hero, show mobile menu */
@@ -1705,6 +1960,9 @@ footer {
   .tool-item                   { padding: 22px 18px; }
   .ranger-grid                 { grid-template-columns: 1fr; gap: 40px; }
   .contact-wrap                { grid-template-columns: 1fr; gap: 40px; }
+  .tracks-grid                 { grid-template-columns: 1fr; }
+  .medals-grid                 { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .dispatches-grid             { grid-template-columns: 1fr; }
   .project-card.featured       { grid-column: span 1; }
   .footer-inner                { flex-direction: column; text-align: center; gap: 12px; }
   .scroll-hint                 { bottom: 20px; }
@@ -1778,6 +2036,12 @@ footer {
   .ranger-stats                { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
   .stat-box                    { text-align: center; }
   .contact-wrap                { gap: 32px; margin-top: 40px; }
+  .tracks-grid                 { margin-top: 40px; }
+  .track-card                  { padding: 24px 20px; }
+  .medals-grid                 { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); margin-top: 40px; }
+  .medal-card                  { padding: 22px 16px; }
+  .dispatches-grid             { margin-top: 40px; }
+  .dispatch-card               { padding: 22px 18px; gap: 14px; }
   .form-input, .form-submit    { min-height: 44px; }
   .footer-inner                { padding: 24px 16px; gap: 10px; }
   .footer-logo, .footer-copy   { font-size: 13px; }

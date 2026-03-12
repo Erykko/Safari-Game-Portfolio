@@ -10,7 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function safari_block_render_boot_screen( $attributes ) {
-	$kicker = isset( $attributes['kicker'] ) ? $attributes['kicker'] : ( function_exists( 'get_field' ) ? get_field( 'boot_kicker', 'option' ) : null ) ?: 'Safari Portfolio · Nairobi, Kenya';
+	$kicker_source = isset( $attributes['kicker'] ) ? $attributes['kicker'] : Safari_Settings::get( 'boot_kicker' );
+	$kicker        = $kicker_source ?: 'Safari Portfolio · Nairobi, Kenya';
 	$title  = isset( $attributes['title'] ) ? $attributes['title'] : '';
 	$sub    = isset( $attributes['subtitle'] ) ? $attributes['subtitle'] : '';
 	if ( ! $title ) {

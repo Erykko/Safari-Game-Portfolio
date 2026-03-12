@@ -1,6 +1,6 @@
 <?php
 /**
- * Register Safari section blocks (server-side render only).
+ * Register Safari section blocks (server-side render + editor inserter).
  *
  * @package Safari_Portfolio
  */
@@ -18,10 +18,37 @@ require_once SAFARI_PORTFOLIO_PATH . 'inc/blocks/safari-hud.php';
 require_once SAFARI_PORTFOLIO_PATH . 'inc/blocks/safari-progress-bar.php';
 require_once SAFARI_PORTFOLIO_PATH . 'inc/blocks/safari-divider.php';
 require_once SAFARI_PORTFOLIO_PATH . 'inc/blocks/safari-boot-screen.php';
+require_once SAFARI_PORTFOLIO_PATH . 'inc/blocks/safari-testimonials.php';
+require_once SAFARI_PORTFOLIO_PATH . 'inc/blocks/safari-achievements.php';
+require_once SAFARI_PORTFOLIO_PATH . 'inc/blocks/safari-dispatches.php';
+
+add_filter( 'block_categories_all', 'safari_portfolio_block_category', 10, 2 );
+
+function safari_portfolio_block_category( $categories, $context ) {
+	return array_merge(
+		array(
+			array(
+				'slug'  => 'safari',
+				'title' => __( 'Safari Portfolio', 'safari-portfolio' ),
+				'icon'  => 'palmtree',
+			),
+		),
+		$categories
+	);
+}
 
 add_action( 'init', 'safari_portfolio_register_blocks' );
 
 function safari_portfolio_register_blocks() {
+	$editor_js = SAFARI_PORTFOLIO_PATH . 'assets/js/safari-blocks-editor.js';
+	wp_register_script(
+		'safari-blocks-editor',
+		SAFARI_PORTFOLIO_URL . 'assets/js/safari-blocks-editor.js',
+		array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-server-side-render' ),
+		file_exists( $editor_js ) ? (string) filemtime( $editor_js ) : '1.0',
+		true
+	);
+
 	$blocks = array(
 		array(
 			'name'       => 'safari/hero',
@@ -118,10 +145,40 @@ function safari_portfolio_register_blocks() {
 				'subtitle' => array( 'type' => 'string' ),
 			),
 		),
+		array(
+			'name'       => 'safari/testimonials',
+			'title'      => __( 'Safari Testimonials (Animal Tracks)', 'safari-portfolio' ),
+			'render'     => 'safari_block_render_testimonials',
+			'attributes' => array(
+				'sectionLabel' => array( 'type' => 'string' ),
+				'sectionTitle' => array( 'type' => 'string' ),
+				'count'        => array( 'type' => 'number', 'default' => 6 ),
+			),
+		),
+		array(
+			'name'       => 'safari/achievements',
+			'title'      => __( 'Safari Achievements (Field Medals)', 'safari-portfolio' ),
+			'render'     => 'safari_block_render_achievements',
+			'attributes' => array(
+				'sectionLabel' => array( 'type' => 'string' ),
+				'sectionTitle' => array( 'type' => 'string' ),
+			),
+		),
+		array(
+			'name'       => 'safari/dispatches',
+			'title'      => __( 'Safari Dispatches (Field Dispatches)', 'safari-portfolio' ),
+			'render'     => 'safari_block_render_dispatches',
+			'attributes' => array(
+				'sectionLabel' => array( 'type' => 'string' ),
+				'sectionTitle' => array( 'type' => 'string' ),
+				'count'        => array( 'type' => 'number', 'default' => 3 ),
+			),
+		),
 	);
 
 	foreach ( $blocks as $block ) {
 		register_block_type( $block['name'], array(
+			'editor_script'   => 'safari-blocks-editor',
 			'render_callback' => $block['render'],
 			'attributes'      => $block['attributes'],
 		) );

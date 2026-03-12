@@ -11,18 +11,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function safari_block_render_hero( $attributes ) {
-	$badge   = isset( $attributes['badge'] ) ? $attributes['badge'] : ( function_exists( 'get_field' ) ? get_field( 'hero_badge', 'option' ) : '' ) ?: 'Est. Digital Safari';
-	$tag     = isset( $attributes['tag'] ) ? $attributes['tag'] : ( function_exists( 'get_field' ) ? get_field( 'hero_tag', 'option' ) : '' ) ?: 'Welcome to Base Camp';
-	$name    = isset( $attributes['name'] ) ? $attributes['name'] : ( function_exists( 'get_field' ) ? get_field( 'hero_name', 'option' ) : '' ) ?: 'Eric Mutema';
-	$title   = isset( $attributes['title'] ) ? $attributes['title'] : ( function_exists( 'get_field' ) ? get_field( 'hero_title', 'option' ) : '' ) ?: 'WordPress Developer';
-	$desc    = isset( $attributes['desc'] ) ? $attributes['desc'] : ( function_exists( 'get_field' ) ? get_field( 'hero_desc', 'option' ) : '' ) ?: 'In the vast digital savanna, ideas roam wild. This base camp is your briefing tent — choose your mission and I\'ll guide you through the terrain: toolkit, sightings, or the ranger\'s story.';
-	$mission_title = isset( $attributes['missionTitle'] ) ? $attributes['missionTitle'] : ( function_exists( 'get_field' ) ? get_field( 'hero_mission_title', 'option' ) : '' ) ?: 'Select Your First Safari Mission';
-	$mission_sub   = isset( $attributes['missionSub'] ) ? $attributes['missionSub'] : ( function_exists( 'get_field' ) ? get_field( 'hero_mission_sub', 'option' ) : '' ) ?: 'A short briefing that shapes how you enter the trail.';
-	$confirm_label = isset( $attributes['confirmLabel'] ) ? $attributes['confirmLabel'] : ( function_exists( 'get_field' ) ? get_field( 'hero_confirm_label', 'option' ) : '' ) ?: 'Confirm Safari & Begin';
-	$mini_log = isset( $attributes['miniLog'] ) ? $attributes['miniLog'] : ( function_exists( 'get_field' ) ? get_field( 'hero_mini_log', 'option' ) : '' ) ?: 'Choose a time of day and mission to begin your safari.';
-	$scroll_hint = isset( $attributes['scrollHint'] ) ? $attributes['scrollHint'] : ( function_exists( 'get_field' ) ? get_field( 'hero_scroll_hint', 'option' ) : '' ) ?: 'Scroll to explore';
-	$location = isset( $attributes['location'] ) ? $attributes['location'] : ( function_exists( 'get_field' ) ? get_field( 'hero_location', 'option' ) : '' ) ?: 'Nairobi, Kenya';
-	$hud_label = isset( $attributes['hudLabel'] ) ? $attributes['hudLabel'] : ( function_exists( 'get_field' ) ? get_field( 'hero_hud_label', 'option' ) : '' ) ?: 'Digital Safari Mission Console';
+	$attributes = is_array( $attributes ) ? $attributes : array();
+	$badge   = isset( $attributes['badge'] ) ? sanitize_text_field( $attributes['badge'] ) : Safari_Settings::get( 'hero_badge', 'Est. Digital Safari' );
+	$tag     = isset( $attributes['tag'] ) ? sanitize_text_field( $attributes['tag'] ) : Safari_Settings::get( 'hero_tag', 'Welcome to Base Camp' );
+	$name    = isset( $attributes['name'] ) ? sanitize_text_field( $attributes['name'] ) : Safari_Settings::get( 'hero_name', 'Eric Mutema' );
+	$title   = isset( $attributes['title'] ) ? sanitize_text_field( $attributes['title'] ) : Safari_Settings::get( 'hero_title', 'WordPress Developer' );
+	$desc    = isset( $attributes['desc'] ) ? sanitize_textarea_field( $attributes['desc'] ) : Safari_Settings::get( 'hero_desc', "In the vast digital savanna, ideas roam wild. This base camp is your briefing tent — choose your mission and I'll guide you through the terrain: toolkit, sightings, or the ranger's story." );
+	$mission_title = isset( $attributes['missionTitle'] ) ? sanitize_text_field( $attributes['missionTitle'] ) : Safari_Settings::get( 'hero_mission_title', 'Select Your First Safari Mission' );
+	$mission_sub   = isset( $attributes['missionSub'] ) ? sanitize_text_field( $attributes['missionSub'] ) : Safari_Settings::get( 'hero_mission_sub', 'A short briefing that shapes how you enter the trail.' );
+	$confirm_label = isset( $attributes['confirmLabel'] ) ? sanitize_text_field( $attributes['confirmLabel'] ) : Safari_Settings::get( 'hero_confirm_label', 'Confirm Safari & Begin' );
+	$mini_log = isset( $attributes['miniLog'] ) ? sanitize_text_field( $attributes['miniLog'] ) : Safari_Settings::get( 'hero_mini_log', 'Choose a time of day and mission to begin your safari.' );
+	$scroll_hint = isset( $attributes['scrollHint'] ) ? sanitize_text_field( $attributes['scrollHint'] ) : Safari_Settings::get( 'hero_scroll_hint', 'Scroll to explore' );
+	$location = isset( $attributes['location'] ) ? sanitize_text_field( $attributes['location'] ) : Safari_Settings::get( 'hero_location', 'Nairobi, Kenya' );
+	$hud_label = isset( $attributes['hudLabel'] ) ? sanitize_text_field( $attributes['hudLabel'] ) : Safari_Settings::get( 'hero_hud_label', 'Digital Safari Mission Console' );
+	if ( '' === $badge ) {
+		$badge = 'Est. Digital Safari';
+	}
+	if ( '' === $name ) {
+		$name = 'Eric Mutema';
+	}
 
 	$name_br = str_replace( ' ', '<br>', esc_html( $name ) );
 	ob_start();

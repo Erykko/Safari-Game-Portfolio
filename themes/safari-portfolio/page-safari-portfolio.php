@@ -1,7 +1,7 @@
 <?php
 /**
- * Front page — full game layout. Renders section blocks in order; HUD, progress bar, and chrome wrap the main content.
- * Respects Global Settings toggles (show_hero, show_toolkit, etc.) when ACF is active.
+ * Template Name: Safari Portfolio
+ * Description: Full safari portfolio layout with all game sections. Use this on your front page.
  *
  * @package Safari_Portfolio
  */
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function safari_front_page_show_section( $key ) {
+function safari_tpl_show_section( $key ) {
 	if ( ! class_exists( 'Safari_Settings' ) ) {
 		return true;
 	}
@@ -33,11 +33,11 @@ get_header();
   </div>
   <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
-<?php if ( safari_front_page_show_section( 'hud' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'hud' ) ) : ?>
   <?php echo safari_block_render_hud( array() ); ?>
 <?php endif; ?>
 
-<?php if ( safari_front_page_show_section( 'progress_bar' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'progress_bar' ) ) : ?>
   <?php echo safari_block_render_progress_bar( array() ); ?>
 <?php endif; ?>
 
@@ -53,7 +53,7 @@ get_header();
     </div>
   </div>
 
-<?php if ( safari_front_page_show_section( 'boot_screen' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'boot_screen' ) ) : ?>
   <?php echo safari_block_render_boot_screen( array() ); ?>
 <?php endif; ?>
 
@@ -67,45 +67,45 @@ get_header();
   </div>
 
   <main id="main-content">
-<?php if ( safari_front_page_show_section( 'hero' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'hero' ) ) : ?>
     <?php echo safari_block_render_hero( array() ); ?>
 <?php endif; ?>
 
     <?php echo safari_block_render_divider( array() ); ?>
 
-<?php if ( safari_front_page_show_section( 'toolkit' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'toolkit' ) ) : ?>
     <?php echo safari_block_render_toolkit( array() ); ?>
 <?php endif; ?>
 
     <?php echo safari_block_render_divider( array( 'variant' => 'alt' ) ); ?>
 
-<?php if ( safari_front_page_show_section( 'sightings' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'sightings' ) ) : ?>
     <?php echo safari_block_render_sightings( array() ); ?>
 <?php endif; ?>
 
     <?php echo safari_block_render_divider( array() ); ?>
 
-<?php if ( safari_front_page_show_section( 'ranger' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'ranger' ) ) : ?>
     <?php echo safari_block_render_ranger( array() ); ?>
 <?php endif; ?>
 
-<?php if ( safari_front_page_show_section( 'testimonials' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'testimonials' ) ) : ?>
     <?php echo safari_block_render_testimonials( array() ); ?>
 <?php endif; ?>
 
     <?php echo safari_block_render_divider( array( 'variant' => 'alt' ) ); ?>
 
-<?php if ( safari_front_page_show_section( 'achievements' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'achievements' ) ) : ?>
     <?php echo safari_block_render_achievements( array() ); ?>
 <?php endif; ?>
 
     <?php echo safari_block_render_divider( array() ); ?>
 
-<?php if ( safari_front_page_show_section( 'contact' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'contact' ) ) : ?>
     <?php echo safari_block_render_contact( array() ); ?>
 <?php endif; ?>
 
-<?php if ( safari_front_page_show_section( 'dispatches' ) ) : ?>
+<?php if ( safari_tpl_show_section( 'dispatches' ) ) : ?>
     <?php echo safari_block_render_dispatches( array() ); ?>
 <?php endif; ?>
   </main>
